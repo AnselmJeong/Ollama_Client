@@ -166,6 +166,19 @@ const ChatArea: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [messages]);
 
+  const handlePromptSelect = (prompt: string) => {
+    const newPrompt = prompt.endsWith('\n') ? prompt : prompt + '\n';
+    setInput(newPrompt);
+    setShowPrompts(false);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        const len = textareaRef.current.value.length;
+        textareaRef.current.setSelectionRange(len, len);
+      }
+    }, 10);
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -216,11 +229,7 @@ const ChatArea: React.FC = () => {
                     <div 
                         key={t.id}
                         className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-0 flex flex-col ${index === selectedIndex ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
-                        onClick={() => {
-                            setInput(t.prompt + '\n');
-                            setShowPrompts(false);
-                            textareaRef.current?.focus();
-                        }}
+                        onClick={() => handlePromptSelect(t.prompt)}
                         onMouseEnter={() => setSelectedIndex(index)}
                     >
                         <div className="flex items-center space-x-2">

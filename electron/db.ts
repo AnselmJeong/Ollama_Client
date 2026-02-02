@@ -75,10 +75,14 @@ export function initDatabase() {
       key TEXT PRIMARY KEY,
       value TEXT
     );
+
+    -- specific migration to Ensure all keys start with /
+    UPDATE prompt_templates SET key = '/' || key WHERE key NOT LIKE '/%';
+
     -- Seed Templates
     INSERT OR IGNORE INTO prompt_templates (id, key, title, prompt, category) VALUES 
-    ('1', 'summary', 'Summarize', 'Please summarize the following text in 3 bullet points.', 'General'),
-    ('2', 'code-review', 'Code Review', 'Review the following code for performance and security issues.', 'Programming');
+    ('1', '/summary', 'Summarize', 'Please summarize the following text in 3 bullet points.', 'General'),
+    ('2', '/code-review', 'Code Review', 'Review the following code for performance and security issues.', 'Programming');
   `);
 
   console.log('Database initialized at:', dbPath);

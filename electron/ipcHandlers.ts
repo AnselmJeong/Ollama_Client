@@ -84,14 +84,18 @@ export function setupIpcHandlers() {
 
   ipcMain.handle('create-template', (_, template: any) => {
     const id = uuidv4();
+    const prompt = template.prompt.endsWith('\n') ? template.prompt : template.prompt + '\n';
+    const key = template.key.startsWith('/') ? template.key : '/' + template.key;
     const stmt = db.prepare('INSERT INTO prompt_templates (id, key, title, prompt) VALUES (?, ?, ?, ?)');
-    stmt.run(id, template.key, template.title, template.prompt);
+    stmt.run(id, key, template.title, prompt);
     return id;
   });
 
   ipcMain.handle('update-template', (_, template: any) => {
+    const prompt = template.prompt.endsWith('\n') ? template.prompt : template.prompt + '\n';
+    const key = template.key.startsWith('/') ? template.key : '/' + template.key;
     const stmt = db.prepare('UPDATE prompt_templates SET key = ?, title = ?, prompt = ? WHERE id = ?');
-    stmt.run(template.key, template.title, template.prompt, template.id);
+    stmt.run(key, template.title, prompt, template.id);
     return true;
   });
 

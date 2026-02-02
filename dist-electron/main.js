@@ -11,7 +11,7 @@ import { randomFillSync as Se, randomUUID as Le } from "node:crypto";
 var _ = { exports: {} };
 const xe = "17.2.3", Ue = {
   version: xe
-}, K = L, F = ie, Pe = Ie, Ce = De, $e = Ue, X = $e.version, re = [
+}, Y = L, k = ie, Pe = Ie, Ce = De, $e = Ue, X = $e.version, re = [
   "🔐 encrypt with Dotenvx: https://dotenvx.com",
   "🔐 prevent committing .env to code: https://dotenvx.com/precommit",
   "🔐 prevent building .env in docker: https://dotenvx.com/prebuild",
@@ -35,30 +35,30 @@ function Be() {
 function O(e) {
   return typeof e == "string" ? !["false", "0", "no", "off", ""].includes(e.toLowerCase()) : !!e;
 }
-function Fe() {
+function ke() {
   return process.stdout.isTTY;
 }
-function je(e) {
-  return Fe() ? `\x1B[2m${e}\x1B[0m` : e;
+function Fe(e) {
+  return ke() ? `\x1B[2m${e}\x1B[0m` : e;
 }
-const Me = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
-function Ve(e) {
+const je = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
+function Me(e) {
   const t = {};
   let r = e.toString();
   r = r.replace(/\r\n?/mg, `
 `);
-  let n;
-  for (; (n = Me.exec(r)) != null; ) {
-    const o = n[1];
-    let s = n[2] || "";
-    s = s.trim();
-    const a = s[0];
-    s = s.replace(/^(['"`])([\s\S]*)\1$/mg, "$2"), a === '"' && (s = s.replace(/\\n/g, `
-`), s = s.replace(/\\r/g, "\r")), t[o] = s;
+  let s;
+  for (; (s = je.exec(r)) != null; ) {
+    const o = s[1];
+    let n = s[2] || "";
+    n = n.trim();
+    const a = n[0];
+    n = n.replace(/^(['"`])([\s\S]*)\1$/mg, "$2"), a === '"' && (n = n.replace(/\\n/g, `
+`), n = n.replace(/\\r/g, "\r")), t[o] = n;
   }
   return t;
 }
-function ke(e) {
+function Ve(e) {
   e = e || {};
   const t = he(e);
   e.path = t;
@@ -67,20 +67,20 @@ function ke(e) {
     const a = new Error(`MISSING_DATA: Cannot parse ${t} for an unknown reason`);
     throw a.code = "MISSING_DATA", a;
   }
-  const n = ue(e).split(","), o = n.length;
-  let s;
+  const s = ue(e).split(","), o = s.length;
+  let n;
   for (let a = 0; a < o; a++)
     try {
-      const i = n[a].trim(), u = Ke(r, i);
-      s = h.decrypt(u.ciphertext, u.key);
+      const i = s[a].trim(), u = Ye(r, i);
+      n = h.decrypt(u.ciphertext, u.key);
       break;
     } catch (i) {
       if (a + 1 >= o)
         throw i;
     }
-  return h.parse(s);
+  return h.parse(n);
 }
-function Ye(e) {
+function Ke(e) {
   console.error(`[dotenv@${X}][WARN] ${e}`);
 }
 function N(e) {
@@ -92,7 +92,7 @@ function le(e) {
 function ue(e) {
   return e && e.DOTENV_KEY && e.DOTENV_KEY.length > 0 ? e.DOTENV_KEY : process.env.DOTENV_KEY && process.env.DOTENV_KEY.length > 0 ? process.env.DOTENV_KEY : "";
 }
-function Ke(e, t) {
+function Ye(e, t) {
   let r;
   try {
     r = new URL(t);
@@ -103,8 +103,8 @@ function Ke(e, t) {
     }
     throw i;
   }
-  const n = r.password;
-  if (!n) {
+  const s = r.password;
+  if (!s) {
     const i = new Error("INVALID_DOTENV_KEY: Missing key part");
     throw i.code = "INVALID_DOTENV_KEY", i;
   }
@@ -113,87 +113,87 @@ function Ke(e, t) {
     const i = new Error("INVALID_DOTENV_KEY: Missing environment part");
     throw i.code = "INVALID_DOTENV_KEY", i;
   }
-  const s = `DOTENV_VAULT_${o.toUpperCase()}`, a = e.parsed[s];
+  const n = `DOTENV_VAULT_${o.toUpperCase()}`, a = e.parsed[n];
   if (!a) {
-    const i = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${s} in your .env.vault file.`);
+    const i = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${n} in your .env.vault file.`);
     throw i.code = "NOT_FOUND_DOTENV_ENVIRONMENT", i;
   }
-  return { ciphertext: a, key: n };
+  return { ciphertext: a, key: s };
 }
 function he(e) {
   let t = null;
   if (e && e.path && e.path.length > 0)
     if (Array.isArray(e.path))
       for (const r of e.path)
-        K.existsSync(r) && (t = r.endsWith(".vault") ? r : `${r}.vault`);
+        Y.existsSync(r) && (t = r.endsWith(".vault") ? r : `${r}.vault`);
     else
       t = e.path.endsWith(".vault") ? e.path : `${e.path}.vault`;
   else
-    t = F.resolve(process.cwd(), ".env.vault");
-  return K.existsSync(t) ? t : null;
+    t = k.resolve(process.cwd(), ".env.vault");
+  return Y.existsSync(t) ? t : null;
 }
-function ne(e) {
-  return e[0] === "~" ? F.join(Pe.homedir(), e.slice(1)) : e;
+function se(e) {
+  return e[0] === "~" ? k.join(Pe.homedir(), e.slice(1)) : e;
 }
 function He(e) {
   const t = O(process.env.DOTENV_CONFIG_DEBUG || e && e.debug), r = O(process.env.DOTENV_CONFIG_QUIET || e && e.quiet);
   (t || !r) && le("Loading env from encrypted .env.vault");
-  const n = h._parseVault(e);
+  const s = h._parseVault(e);
   let o = process.env;
-  return e && e.processEnv != null && (o = e.processEnv), h.populate(o, n, e), { parsed: n };
+  return e && e.processEnv != null && (o = e.processEnv), h.populate(o, s, e), { parsed: s };
 }
 function Xe(e) {
-  const t = F.resolve(process.cwd(), ".env");
-  let r = "utf8", n = process.env;
-  e && e.processEnv != null && (n = e.processEnv);
-  let o = O(n.DOTENV_CONFIG_DEBUG || e && e.debug), s = O(n.DOTENV_CONFIG_QUIET || e && e.quiet);
+  const t = k.resolve(process.cwd(), ".env");
+  let r = "utf8", s = process.env;
+  e && e.processEnv != null && (s = e.processEnv);
+  let o = O(s.DOTENV_CONFIG_DEBUG || e && e.debug), n = O(s.DOTENV_CONFIG_QUIET || e && e.quiet);
   e && e.encoding ? r = e.encoding : o && N("No encoding is specified. UTF-8 is used by default");
   let a = [t];
   if (e && e.path)
     if (!Array.isArray(e.path))
-      a = [ne(e.path)];
+      a = [se(e.path)];
     else {
       a = [];
       for (const c of e.path)
-        a.push(ne(c));
+        a.push(se(c));
     }
   let i;
   const u = {};
   for (const c of a)
     try {
-      const E = h.parse(K.readFileSync(c, { encoding: r }));
+      const E = h.parse(Y.readFileSync(c, { encoding: r }));
       h.populate(u, E, e);
     } catch (E) {
       o && N(`Failed to load ${c} ${E.message}`), i = E;
     }
-  const l = h.populate(n, u, e);
-  if (o = O(n.DOTENV_CONFIG_DEBUG || o), s = O(n.DOTENV_CONFIG_QUIET || s), o || !s) {
+  const l = h.populate(s, u, e);
+  if (o = O(s.DOTENV_CONFIG_DEBUG || o), n = O(s.DOTENV_CONFIG_QUIET || n), o || !n) {
     const c = Object.keys(l).length, E = [];
     for (const x of a)
       try {
-        const U = F.relative(process.cwd(), x);
+        const U = k.relative(process.cwd(), x);
         E.push(U);
       } catch (U) {
         o && N(`Failed to load ${x} ${U.message}`), i = U;
       }
-    le(`injecting env (${c}) from ${E.join(",")} ${je(`-- tip: ${Be()}`)}`);
+    le(`injecting env (${c}) from ${E.join(",")} ${Fe(`-- tip: ${Be()}`)}`);
   }
   return i ? { parsed: u, error: i } : { parsed: u };
 }
-function Ge(e) {
+function We(e) {
   if (ue(e).length === 0)
     return h.configDotenv(e);
   const t = he(e);
-  return t ? h._configVault(e) : (Ye(`You set DOTENV_KEY but you are missing a .env.vault file at ${t}. Did you forget to build it?`), h.configDotenv(e));
+  return t ? h._configVault(e) : (Ke(`You set DOTENV_KEY but you are missing a .env.vault file at ${t}. Did you forget to build it?`), h.configDotenv(e));
 }
-function qe(e, t) {
+function Ge(e, t) {
   const r = Buffer.from(t.slice(-64), "hex");
-  let n = Buffer.from(e, "base64");
-  const o = n.subarray(0, 12), s = n.subarray(-16);
-  n = n.subarray(12, -16);
+  let s = Buffer.from(e, "base64");
+  const o = s.subarray(0, 12), n = s.subarray(-16);
+  s = s.subarray(12, -16);
   try {
     const a = Ce.createDecipheriv("aes-256-gcm", r, o);
-    return a.setAuthTag(s), `${a.update(n)}${a.final()}`;
+    return a.setAuthTag(n), `${a.update(s)}${a.final()}`;
   } catch (a) {
     const i = a instanceof RangeError, u = a.message === "Invalid key length", l = a.message === "Unsupported state or unable to authenticate data";
     if (i || u) {
@@ -206,24 +206,24 @@ function qe(e, t) {
       throw a;
   }
 }
-function We(e, t, r = {}) {
-  const n = !!(r && r.debug), o = !!(r && r.override), s = {};
+function qe(e, t, r = {}) {
+  const s = !!(r && r.debug), o = !!(r && r.override), n = {};
   if (typeof t != "object") {
     const a = new Error("OBJECT_REQUIRED: Please check the processEnv argument being passed to populate");
     throw a.code = "OBJECT_REQUIRED", a;
   }
   for (const a of Object.keys(t))
-    Object.prototype.hasOwnProperty.call(e, a) ? (o === !0 && (e[a] = t[a], s[a] = t[a]), n && N(o === !0 ? `"${a}" is already defined and WAS overwritten` : `"${a}" is already defined and was NOT overwritten`)) : (e[a] = t[a], s[a] = t[a]);
-  return s;
+    Object.prototype.hasOwnProperty.call(e, a) ? (o === !0 && (e[a] = t[a], n[a] = t[a]), s && N(o === !0 ? `"${a}" is already defined and WAS overwritten` : `"${a}" is already defined and was NOT overwritten`)) : (e[a] = t[a], n[a] = t[a]);
+  return n;
 }
 const h = {
   configDotenv: Xe,
   _configVault: He,
-  _parseVault: ke,
-  config: Ge,
-  decrypt: qe,
-  parse: Ve,
-  populate: We
+  _parseVault: Ve,
+  config: We,
+  decrypt: Ge,
+  parse: Me,
+  populate: qe
 };
 _.exports.configDotenv = h.configDotenv;
 _.exports._configVault = h._configVault;
@@ -291,10 +291,14 @@ function fe() {
       key TEXT PRIMARY KEY,
       value TEXT
     );
+
+    -- specific migration to Ensure all keys start with /
+    UPDATE prompt_templates SET key = '/' || key WHERE key NOT LIKE '/%';
+
     -- Seed Templates
     INSERT OR IGNORE INTO prompt_templates (id, key, title, prompt, category) VALUES 
-    ('1', 'summary', 'Summarize', 'Please summarize the following text in 3 bullet points.', 'General'),
-    ('2', 'code-review', 'Code Review', 'Review the following code for performance and security issues.', 'Programming');
+    ('1', '/summary', 'Summarize', 'Please summarize the following text in 3 bullet points.', 'General'),
+    ('2', '/code-review', 'Code Review', 'Review the following code for performance and security issues.', 'Programming');
   `), console.log("Database initialized at:", t), I;
 }
 const pe = () => (I || fe(), I), p = [];
@@ -308,17 +312,17 @@ let P = $.length;
 function Ze() {
   return P > $.length - 16 && (Se($), P = 0), $.slice(P, P += 16);
 }
-const se = { randomUUID: Le };
+const ne = { randomUUID: Le };
 function et(e, t, r) {
   var o;
   e = e || {};
-  const n = e.random ?? ((o = e.rng) == null ? void 0 : o.call(e)) ?? Ze();
-  if (n.length < 16)
+  const s = e.random ?? ((o = e.rng) == null ? void 0 : o.call(e)) ?? Ze();
+  if (s.length < 16)
     throw new Error("Random bytes length must be >= 16");
-  return n[6] = n[6] & 15 | 64, n[8] = n[8] & 63 | 128, Qe(n);
+  return s[6] = s[6] & 15 | 64, s[8] = s[8] & 63 | 128, Qe(s);
 }
 function C(e, t, r) {
-  return se.randomUUID && !e ? se.randomUUID() : et(e);
+  return ne.randomUUID && !e ? ne.randomUUID() : et(e);
 }
 var m = typeof globalThis < "u" && globalThis || typeof self < "u" && self || // eslint-disable-next-line no-undef
 typeof global < "u" && global || {}, y = {
@@ -348,7 +352,7 @@ if (y.arrayBuffer)
     "[object Uint32Array]",
     "[object Float32Array]",
     "[object Float64Array]"
-  ], nt = ArrayBuffer.isView || function(e) {
+  ], st = ArrayBuffer.isView || function(e) {
     return e && rt.indexOf(Object.prototype.toString.call(e)) > -1;
   };
 function D(e) {
@@ -356,10 +360,10 @@ function D(e) {
     throw new TypeError('Invalid character in header field name: "' + e + '"');
   return e.toLowerCase();
 }
-function G(e) {
+function W(e) {
   return typeof e != "string" && (e = String(e)), e;
 }
-function q(e) {
+function G(e) {
   var t = {
     next: function() {
       var r = e.shift();
@@ -382,7 +386,7 @@ function d(e) {
   }, this);
 }
 d.prototype.append = function(e, t) {
-  e = D(e), t = G(t);
+  e = D(e), t = W(t);
   var r = this.map[e];
   this.map[e] = r ? r + ", " + t : t;
 };
@@ -396,7 +400,7 @@ d.prototype.has = function(e) {
   return this.map.hasOwnProperty(D(e));
 };
 d.prototype.set = function(e, t) {
-  this.map[D(e)] = G(t);
+  this.map[D(e)] = W(t);
 };
 d.prototype.forEach = function(e, t) {
   for (var r in this.map)
@@ -406,22 +410,22 @@ d.prototype.keys = function() {
   var e = [];
   return this.forEach(function(t, r) {
     e.push(r);
-  }), q(e);
+  }), G(e);
 };
 d.prototype.values = function() {
   var e = [];
   return this.forEach(function(t) {
     e.push(t);
-  }), q(e);
+  }), G(e);
 };
 d.prototype.entries = function() {
   var e = [];
   return this.forEach(function(t, r) {
     e.push([r, t]);
-  }), q(e);
+  }), G(e);
 };
 y.iterable && (d.prototype[Symbol.iterator] = d.prototype.entries);
-function j(e) {
+function F(e) {
   if (!e._noBody) {
     if (e.bodyUsed)
       return Promise.reject(new TypeError("Already read"));
@@ -437,17 +441,17 @@ function me(e) {
     };
   });
 }
-function st(e) {
+function nt(e) {
   var t = new FileReader(), r = me(t);
   return t.readAsArrayBuffer(e), r;
 }
 function ot(e) {
-  var t = new FileReader(), r = me(t), n = /charset=([A-Za-z0-9_-]+)/.exec(e.type), o = n ? n[1] : "utf-8";
+  var t = new FileReader(), r = me(t), s = /charset=([A-Za-z0-9_-]+)/.exec(e.type), o = s ? s[1] : "utf-8";
   return t.readAsText(e, o), r;
 }
 function at(e) {
-  for (var t = new Uint8Array(e), r = new Array(t.length), n = 0; n < t.length; n++)
-    r[n] = String.fromCharCode(t[n]);
+  for (var t = new Uint8Array(e), r = new Array(t.length), s = 0; s < t.length; s++)
+    r[s] = String.fromCharCode(t[s]);
   return r.join("");
 }
 function oe(e) {
@@ -458,9 +462,9 @@ function oe(e) {
 }
 function Ee() {
   return this.bodyUsed = !1, this._initBody = function(e) {
-    this.bodyUsed = this.bodyUsed, this._bodyInit = e, e ? typeof e == "string" ? this._bodyText = e : y.blob && Blob.prototype.isPrototypeOf(e) ? this._bodyBlob = e : y.formData && FormData.prototype.isPrototypeOf(e) ? this._bodyFormData = e : y.searchParams && URLSearchParams.prototype.isPrototypeOf(e) ? this._bodyText = e.toString() : y.arrayBuffer && y.blob && tt(e) ? (this._bodyArrayBuffer = oe(e.buffer), this._bodyInit = new Blob([this._bodyArrayBuffer])) : y.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(e) || nt(e)) ? this._bodyArrayBuffer = oe(e) : this._bodyText = e = Object.prototype.toString.call(e) : (this._noBody = !0, this._bodyText = ""), this.headers.get("content-type") || (typeof e == "string" ? this.headers.set("content-type", "text/plain;charset=UTF-8") : this._bodyBlob && this._bodyBlob.type ? this.headers.set("content-type", this._bodyBlob.type) : y.searchParams && URLSearchParams.prototype.isPrototypeOf(e) && this.headers.set("content-type", "application/x-www-form-urlencoded;charset=UTF-8"));
+    this.bodyUsed = this.bodyUsed, this._bodyInit = e, e ? typeof e == "string" ? this._bodyText = e : y.blob && Blob.prototype.isPrototypeOf(e) ? this._bodyBlob = e : y.formData && FormData.prototype.isPrototypeOf(e) ? this._bodyFormData = e : y.searchParams && URLSearchParams.prototype.isPrototypeOf(e) ? this._bodyText = e.toString() : y.arrayBuffer && y.blob && tt(e) ? (this._bodyArrayBuffer = oe(e.buffer), this._bodyInit = new Blob([this._bodyArrayBuffer])) : y.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(e) || st(e)) ? this._bodyArrayBuffer = oe(e) : this._bodyText = e = Object.prototype.toString.call(e) : (this._noBody = !0, this._bodyText = ""), this.headers.get("content-type") || (typeof e == "string" ? this.headers.set("content-type", "text/plain;charset=UTF-8") : this._bodyBlob && this._bodyBlob.type ? this.headers.set("content-type", this._bodyBlob.type) : y.searchParams && URLSearchParams.prototype.isPrototypeOf(e) && this.headers.set("content-type", "application/x-www-form-urlencoded;charset=UTF-8"));
   }, y.blob && (this.blob = function() {
-    var e = j(this);
+    var e = F(this);
     if (e)
       return e;
     if (this._bodyBlob)
@@ -472,7 +476,7 @@ function Ee() {
     return Promise.resolve(new Blob([this._bodyText]));
   }), this.arrayBuffer = function() {
     if (this._bodyArrayBuffer) {
-      var e = j(this);
+      var e = F(this);
       return e || (ArrayBuffer.isView(this._bodyArrayBuffer) ? Promise.resolve(
         this._bodyArrayBuffer.buffer.slice(
           this._bodyArrayBuffer.byteOffset,
@@ -481,11 +485,11 @@ function Ee() {
       ) : Promise.resolve(this._bodyArrayBuffer));
     } else {
       if (y.blob)
-        return this.blob().then(st);
+        return this.blob().then(nt);
       throw new Error("could not read as ArrayBuffer");
     }
   }, this.text = function() {
-    var e = j(this);
+    var e = F(this);
     if (e)
       return e;
     if (this._bodyBlob)
@@ -519,15 +523,15 @@ function R(e, t) {
     this.url = String(e);
   if (this.credentials = t.credentials || this.credentials || "same-origin", (t.headers || !this.headers) && (this.headers = new d(t.headers)), this.method = ct(t.method || this.method || "GET"), this.mode = t.mode || this.mode || null, this.signal = t.signal || this.signal || function() {
     if ("AbortController" in m) {
-      var s = new AbortController();
-      return s.signal;
+      var n = new AbortController();
+      return n.signal;
     }
   }(), this.referrer = null, (this.method === "GET" || this.method === "HEAD") && r)
     throw new TypeError("Body not allowed for GET or HEAD requests");
   if (this._initBody(r), (this.method === "GET" || this.method === "HEAD") && (t.cache === "no-store" || t.cache === "no-cache")) {
-    var n = /([?&])_=[^&]*/;
-    if (n.test(this.url))
-      this.url = this.url.replace(n, "$1_=" + (/* @__PURE__ */ new Date()).getTime());
+    var s = /([?&])_=[^&]*/;
+    if (s.test(this.url))
+      this.url = this.url.replace(s, "$1_=" + (/* @__PURE__ */ new Date()).getTime());
     else {
       var o = /\?/;
       this.url += (o.test(this.url) ? "&" : "?") + "_=" + (/* @__PURE__ */ new Date()).getTime();
@@ -541,22 +545,22 @@ function lt(e) {
   var t = new FormData();
   return e.trim().split("&").forEach(function(r) {
     if (r) {
-      var n = r.split("="), o = n.shift().replace(/\+/g, " "), s = n.join("=").replace(/\+/g, " ");
-      t.append(decodeURIComponent(o), decodeURIComponent(s));
+      var s = r.split("="), o = s.shift().replace(/\+/g, " "), n = s.join("=").replace(/\+/g, " ");
+      t.append(decodeURIComponent(o), decodeURIComponent(n));
     }
   }), t;
 }
 function ut(e) {
   var t = new d(), r = e.replace(/\r?\n[\t ]+/g, " ");
-  return r.split("\r").map(function(n) {
-    return n.indexOf(`
-`) === 0 ? n.substr(1, n.length) : n;
-  }).forEach(function(n) {
-    var o = n.split(":"), s = o.shift().trim();
-    if (s) {
+  return r.split("\r").map(function(s) {
+    return s.indexOf(`
+`) === 0 ? s.substr(1, s.length) : s;
+  }).forEach(function(s) {
+    var o = s.split(":"), n = o.shift().trim();
+    if (n) {
       var a = o.join(":").trim();
       try {
-        t.append(s, a);
+        t.append(n, a);
       } catch (i) {
         console.warn("Response " + i.message);
       }
@@ -596,40 +600,40 @@ try {
 } catch {
   A = function(t, r) {
     this.message = t, this.name = r;
-    var n = Error(t);
-    this.stack = n.stack;
+    var s = Error(t);
+    this.stack = s.stack;
   }, A.prototype = Object.create(Error.prototype), A.prototype.constructor = A;
 }
 function ye(e, t) {
-  return new Promise(function(r, n) {
+  return new Promise(function(r, s) {
     var o = new R(e, t);
     if (o.signal && o.signal.aborted)
-      return n(new A("Aborted", "AbortError"));
-    var s = new XMLHttpRequest();
+      return s(new A("Aborted", "AbortError"));
+    var n = new XMLHttpRequest();
     function a() {
-      s.abort();
+      n.abort();
     }
-    s.onload = function() {
+    n.onload = function() {
       var l = {
-        statusText: s.statusText,
-        headers: ut(s.getAllResponseHeaders() || "")
+        statusText: n.statusText,
+        headers: ut(n.getAllResponseHeaders() || "")
       };
-      o.url.indexOf("file://") === 0 && (s.status < 200 || s.status > 599) ? l.status = 200 : l.status = s.status, l.url = "responseURL" in s ? s.responseURL : l.headers.get("X-Request-URL");
-      var c = "response" in s ? s.response : s.responseText;
+      o.url.indexOf("file://") === 0 && (n.status < 200 || n.status > 599) ? l.status = 200 : l.status = n.status, l.url = "responseURL" in n ? n.responseURL : l.headers.get("X-Request-URL");
+      var c = "response" in n ? n.response : n.responseText;
       setTimeout(function() {
         r(new g(c, l));
       }, 0);
-    }, s.onerror = function() {
+    }, n.onerror = function() {
       setTimeout(function() {
-        n(new TypeError("Network request failed"));
+        s(new TypeError("Network request failed"));
       }, 0);
-    }, s.ontimeout = function() {
+    }, n.ontimeout = function() {
       setTimeout(function() {
-        n(new TypeError("Network request timed out"));
+        s(new TypeError("Network request timed out"));
       }, 0);
-    }, s.onabort = function() {
+    }, n.onabort = function() {
       setTimeout(function() {
-        n(new A("Aborted", "AbortError"));
+        s(new A("Aborted", "AbortError"));
       }, 0);
     };
     function i(l) {
@@ -639,34 +643,34 @@ function ye(e, t) {
         return l;
       }
     }
-    if (s.open(o.method, i(o.url), !0), o.credentials === "include" ? s.withCredentials = !0 : o.credentials === "omit" && (s.withCredentials = !1), "responseType" in s && (y.blob ? s.responseType = "blob" : y.arrayBuffer && (s.responseType = "arraybuffer")), t && typeof t.headers == "object" && !(t.headers instanceof d || m.Headers && t.headers instanceof m.Headers)) {
+    if (n.open(o.method, i(o.url), !0), o.credentials === "include" ? n.withCredentials = !0 : o.credentials === "omit" && (n.withCredentials = !1), "responseType" in n && (y.blob ? n.responseType = "blob" : y.arrayBuffer && (n.responseType = "arraybuffer")), t && typeof t.headers == "object" && !(t.headers instanceof d || m.Headers && t.headers instanceof m.Headers)) {
       var u = [];
       Object.getOwnPropertyNames(t.headers).forEach(function(l) {
-        u.push(D(l)), s.setRequestHeader(l, G(t.headers[l]));
+        u.push(D(l)), n.setRequestHeader(l, W(t.headers[l]));
       }), o.headers.forEach(function(l, c) {
-        u.indexOf(c) === -1 && s.setRequestHeader(c, l);
+        u.indexOf(c) === -1 && n.setRequestHeader(c, l);
       });
     } else
       o.headers.forEach(function(l, c) {
-        s.setRequestHeader(c, l);
+        n.setRequestHeader(c, l);
       });
-    o.signal && (o.signal.addEventListener("abort", a), s.onreadystatechange = function() {
-      s.readyState === 4 && o.signal.removeEventListener("abort", a);
-    }), s.send(typeof o._bodyInit > "u" ? null : o._bodyInit);
+    o.signal && (o.signal.addEventListener("abort", a), n.onreadystatechange = function() {
+      n.readyState === 4 && o.signal.removeEventListener("abort", a);
+    }), n.send(typeof o._bodyInit > "u" ? null : o._bodyInit);
   });
 }
 ye.polyfill = !0;
 m.fetch || (m.fetch = ye, m.Headers = d, m.Request = R, m.Response = g);
 const ge = "11434", Te = `http://127.0.0.1:${ge}`, dt = "0.6.3";
-var ft = Object.defineProperty, pt = (e, t, r) => t in e ? ft(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[t] = r, M = (e, t, r) => (pt(e, typeof t != "symbol" ? t + "" : t, r), r);
-class W extends Error {
+var ft = Object.defineProperty, pt = (e, t, r) => t in e ? ft(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[t] = r, j = (e, t, r) => (pt(e, typeof t != "symbol" ? t + "" : t, r), r);
+class q extends Error {
   constructor(t, r) {
-    super(t), this.error = t, this.status_code = r, this.name = "ResponseError", Error.captureStackTrace && Error.captureStackTrace(this, W);
+    super(t), this.error = t, this.status_code = r, this.name = "ResponseError", Error.captureStackTrace && Error.captureStackTrace(this, q);
   }
 }
 class mt {
-  constructor(t, r, n) {
-    M(this, "abortController"), M(this, "itr"), M(this, "doneCallback"), this.abortController = t, this.itr = r, this.doneCallback = n;
+  constructor(t, r, s) {
+    j(this, "abortController"), j(this, "itr"), j(this, "doneCallback"), this.abortController = t, this.itr = r, this.doneCallback = s;
   }
   abort() {
     this.abortController.abort();
@@ -684,11 +688,11 @@ class mt {
   }
 }
 const z = async (e) => {
-  var n;
+  var s;
   if (e.ok)
     return;
   let t = `Error ${e.status}: ${e.statusText}`, r = null;
-  if ((n = e.headers.get("content-type")) != null && n.includes("application/json"))
+  if ((s = e.headers.get("content-type")) != null && s.includes("application/json"))
     try {
       r = await e.json(), t = r.error || t;
     } catch {
@@ -700,7 +704,7 @@ const z = async (e) => {
     } catch {
       console.log("Failed to get text from error response");
     }
-  throw new W(t, e.status);
+  throw new q(t, e.status);
 };
 function Et() {
   var e;
@@ -714,67 +718,67 @@ function Et() {
 function yt(e) {
   if (e instanceof Headers) {
     const t = {};
-    return e.forEach((r, n) => {
-      t[n] = r;
+    return e.forEach((r, s) => {
+      t[s] = r;
     }), t;
   } else return Array.isArray(e) ? Object.fromEntries(e) : e || {};
 }
 const gt = (e, t) => e[t], J = async (e, t, r = {}) => {
-  const n = {
+  const s = {
     "Content-Type": "application/json",
     Accept: "application/json",
     "User-Agent": `ollama-js/${dt} (${Et()})`
   };
   r.headers = yt(r.headers);
   try {
-    const s = new URL(t);
-    if (s.protocol === "https:" && s.hostname === "ollama.com") {
+    const n = new URL(t);
+    if (n.protocol === "https:" && n.hostname === "ollama.com") {
       const a = typeof process == "object" && process !== null && typeof process.env == "object" && process.env !== null ? gt(process.env, "OLLAMA_API_KEY") : void 0;
       !(r.headers.authorization || r.headers.Authorization) && a && (r.headers.Authorization = `Bearer ${a}`);
     }
-  } catch (s) {
-    console.error("error parsing url", s);
+  } catch (n) {
+    console.error("error parsing url", n);
   }
   const o = Object.fromEntries(
     Object.entries(r.headers).filter(
-      ([s]) => !Object.keys(n).some(
-        (a) => a.toLowerCase() === s.toLowerCase()
+      ([n]) => !Object.keys(s).some(
+        (a) => a.toLowerCase() === n.toLowerCase()
       )
     )
   );
   return r.headers = {
-    ...n,
+    ...s,
     ...o
   }, e(t, r);
-}, V = async (e, t, r) => {
-  const n = await J(e, t, {
+}, M = async (e, t, r) => {
+  const s = await J(e, t, {
     headers: r == null ? void 0 : r.headers
   });
-  return await z(n), n;
-}, T = async (e, t, r, n) => {
-  const s = ((i) => i !== null && typeof i == "object" && !Array.isArray(i))(r) ? JSON.stringify(r) : r, a = await J(e, t, {
+  return await z(s), s;
+}, T = async (e, t, r, s) => {
+  const n = ((i) => i !== null && typeof i == "object" && !Array.isArray(i))(r) ? JSON.stringify(r) : r, a = await J(e, t, {
     method: "POST",
-    body: s,
-    signal: n == null ? void 0 : n.signal,
-    headers: n == null ? void 0 : n.headers
+    body: n,
+    signal: s == null ? void 0 : s.signal,
+    headers: s == null ? void 0 : s.headers
   });
   return await z(a), a;
-}, Tt = async (e, t, r, n) => {
+}, Tt = async (e, t, r, s) => {
   const o = await J(e, t, {
     method: "DELETE",
     body: JSON.stringify(r),
-    headers: n == null ? void 0 : n.headers
+    headers: s == null ? void 0 : s.headers
   });
   return await z(o), o;
 }, wt = async function* (e) {
   const t = new TextDecoder("utf-8");
   let r = "";
-  const n = e.getReader();
+  const s = e.getReader();
   for (; ; ) {
-    const { done: o, value: s } = await n.read();
+    const { done: o, value: n } = await s.read();
     if (o)
       break;
-    r += t.decode(s, { stream: !0 });
+    r += t.decode(n, { stream: !0 });
     const a = r.split(`
 `);
     r = a.pop() ?? "";
@@ -787,7 +791,7 @@ const gt = (e, t) => e[t], J = async (e, t, r = {}) => {
   }
   r += t.decode();
   for (const o of r.split(`
-`).filter((s) => s !== ""))
+`).filter((n) => n !== ""))
     try {
       yield JSON.parse(o);
     } catch {
@@ -799,17 +803,17 @@ const gt = (e, t) => e[t], J = async (e, t, r = {}) => {
   let t = e.includes("://");
   e.startsWith(":") && (e = `http://127.0.0.1${e}`, t = !0), t || (e = `http://${e}`);
   const r = new URL(e);
-  let n = r.port;
-  n || (t ? n = r.protocol === "https:" ? "443" : "80" : n = ge);
+  let s = r.port;
+  s || (t ? s = r.protocol === "https:" ? "443" : "80" : s = ge);
   let o = "";
   r.username && (o = r.username, r.password && (o += `:${r.password}`), o += "@");
-  let s = `${r.protocol}//${o}${r.hostname}:${n}${r.pathname}`;
-  return s.endsWith("/") && (s = s.slice(0, -1)), s;
+  let n = `${r.protocol}//${o}${r.hostname}:${s}${r.pathname}`;
+  return n.endsWith("/") && (n = n.slice(0, -1)), n;
 };
-var _t = Object.defineProperty, vt = (e, t, r) => t in e ? _t(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[t] = r, k = (e, t, r) => (vt(e, typeof t != "symbol" ? t + "" : t, r), r);
+var _t = Object.defineProperty, vt = (e, t, r) => t in e ? _t(e, t, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[t] = r, V = (e, t, r) => (vt(e, typeof t != "symbol" ? t + "" : t, r), r);
 let we = class {
   constructor(t) {
-    k(this, "config"), k(this, "fetch"), k(this, "ongoingStreamedRequests", []), this.config = {
+    V(this, "config"), V(this, "fetch"), V(this, "ongoingStreamedRequests", []), this.config = {
       host: "",
       headers: t == null ? void 0 : t.headers
     }, t != null && t.proxy || (this.config.host = bt((t == null ? void 0 : t.host) ?? Te)), this.fetch = (t == null ? void 0 : t.fetch) ?? fetch;
@@ -833,16 +837,16 @@ let we = class {
    */
   async processStreamableRequest(t, r) {
     r.stream = r.stream ?? !1;
-    const n = `${this.config.host}/api/${t}`;
+    const s = `${this.config.host}/api/${t}`;
     if (r.stream) {
-      const s = new AbortController(), a = await T(this.fetch, n, r, {
-        signal: s.signal,
+      const n = new AbortController(), a = await T(this.fetch, s, r, {
+        signal: n.signal,
         headers: this.config.headers
       });
       if (!a.body)
         throw new Error("Missing body");
       const i = wt(a.body), u = new mt(
-        s,
+        n,
         i,
         () => {
           const l = this.ongoingStreamedRequests.indexOf(u);
@@ -851,7 +855,7 @@ let we = class {
       );
       return this.ongoingStreamedRequests.push(u), u;
     }
-    return await (await T(this.fetch, n, r, {
+    return await (await T(this.fetch, s, r, {
       headers: this.config.headers
     })).json();
   }
@@ -863,11 +867,11 @@ let we = class {
   async encodeImage(t) {
     if (typeof t != "string") {
       const r = new Uint8Array(t);
-      let n = "";
+      let s = "";
       const o = r.byteLength;
-      for (let s = 0; s < o; s++)
-        n += String.fromCharCode(r[s]);
-      return btoa(n);
+      for (let n = 0; n < o; n++)
+        s += String.fromCharCode(r[n]);
+      return btoa(s);
     }
     return t;
   }
@@ -965,7 +969,7 @@ let we = class {
    * @throws {Error} - If the response body is missing.
    */
   async list() {
-    return await (await V(this.fetch, `${this.config.host}/api/tags`, {
+    return await (await M(this.fetch, `${this.config.host}/api/tags`, {
       headers: this.config.headers
     })).json();
   }
@@ -1011,7 +1015,7 @@ let we = class {
    * @throws {Error} - If the response body is missing.
    */
   async ps() {
-    return await (await V(this.fetch, `${this.config.host}/api/ps`, {
+    return await (await M(this.fetch, `${this.config.host}/api/ps`, {
       headers: this.config.headers
     })).json();
   }
@@ -1020,7 +1024,7 @@ let we = class {
    * @returns {Promise<VersionResponse>} - The server version object.
    */
   async version() {
-    return await (await V(this.fetch, `${this.config.host}/api/version`, {
+    return await (await M(this.fetch, `${this.config.host}/api/version`, {
       headers: this.config.headers
     })).json();
   }
@@ -1086,7 +1090,7 @@ new Q();
 de();
 const be = "http://localhost:11434";
 let v = new Q({ host: be });
-function Y(e) {
+function K(e) {
   return new Q({
     host: be,
     headers: e ? { Authorization: `Bearer ${e.replace(/"/g, "").trim()}` } : {}
@@ -1095,14 +1099,14 @@ function Y(e) {
 const B = {
   initialize() {
     try {
-      const t = pe().prepare("SELECT value FROM settings WHERE key = ?").get("ollamaApiKey"), r = t ? t.value : null, n = process.env.Ollama_API_KEY || process.env.OLLAMA_API_KEY, o = r || n;
-      o ? (console.log("[OllamaService] Initializing with API Key from " + (r ? "DB" : "ENV")), v = Y(o)) : (console.log("[OllamaService] Initializing without API Key"), v = Y());
+      const t = pe().prepare("SELECT value FROM settings WHERE key = ?").get("ollamaApiKey"), r = t ? t.value : null, s = process.env.Ollama_API_KEY || process.env.OLLAMA_API_KEY, o = r || s;
+      o ? (console.log("[OllamaService] Initializing with API Key from " + (r ? "DB" : "ENV")), v = K(o)) : (console.log("[OllamaService] Initializing without API Key"), v = K());
     } catch (e) {
       console.error("[OllamaService] Init failed:", e);
     }
   },
   updateApiKey(e) {
-    console.log("[OllamaService] Updating API Key"), v = Y(e);
+    console.log("[OllamaService] Updating API Key"), v = K(e);
   },
   async getModels() {
     try {
@@ -1115,15 +1119,15 @@ const B = {
     console.log(`
 --- [Ollama IPC] Chat Request ---`), console.log(`Model: ${e.model}`);
     try {
-      const r = [...e.messages], n = e.tools;
+      const r = [...e.messages], s = e.tools;
       let o = 0;
-      const s = 5;
-      for (; o < s; ) {
+      const n = 5;
+      for (; o < n; ) {
         o++;
         const a = await v.chat({
           model: e.model,
           messages: r,
-          tools: n,
+          tools: s,
           stream: !0
         });
         let i = "", u = "", l = [];
@@ -1170,12 +1174,12 @@ const B = {
 function Ot() {
   const e = pe();
   f.handle("ollama-get-models", async () => await B.getModels()), f.handle("ollama-chat", async (t, r) => await B.chat(r, t)), f.handle("get-projects", () => e.prepare("SELECT * FROM projects ORDER BY created_at DESC").all()), f.handle("create-project", (t, r) => {
-    const n = C();
+    const s = C();
     return e.prepare(`
       INSERT INTO projects (id, name, description, icon, custom_instructions, context_enabled, refer_count, max_tokens)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
-      n,
+      s,
       r.name,
       r.description,
       r.icon,
@@ -1183,43 +1187,50 @@ function Ot() {
       r.contextEnabled ? 1 : 0,
       r.referCount,
       r.maxTokens
-    ), n;
+    ), s;
   }), f.handle("get-chats", (t, r) => r ? e.prepare("SELECT * FROM chats WHERE project_id = ? ORDER BY updated_at DESC").all(r) : e.prepare("SELECT * FROM chats WHERE project_id IS NULL ORDER BY updated_at DESC").all()), f.handle("create-chat", (t, r) => {
-    const n = C();
-    return e.prepare("INSERT INTO chats (id, project_id, title, model) VALUES (?, ?, ?, ?)").run(n, r.project_id, r.title, r.model), n;
+    const s = C();
+    return e.prepare("INSERT INTO chats (id, project_id, title, model) VALUES (?, ?, ?, ?)").run(s, r.project_id, r.title, r.model), s;
   }), f.handle("delete-chat", (t, r) => (e.prepare("DELETE FROM messages WHERE chat_id = ?").run(r), e.prepare("DELETE FROM chats WHERE id = ?").run(r), !0)), f.handle("get-messages", (t, r) => e.prepare("SELECT * FROM messages WHERE chat_id = ? ORDER BY created_at ASC").all(r)), f.handle("add-message", (t, r) => {
-    const n = C();
+    const s = C();
     return e.prepare(`
       INSERT INTO messages (id, chat_id, role, content, thinking, tool_calls, images)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(
-      n,
+      s,
       r.chatId,
       r.role,
       r.content,
       r.thinking,
       JSON.stringify(r.toolCalls),
       JSON.stringify(r.images)
-    ), e.prepare("UPDATE chats SET updated_at = CURRENT_TIMESTAMP WHERE id = ?").run(r.chatId), n;
+    ), e.prepare("UPDATE chats SET updated_at = CURRENT_TIMESTAMP WHERE id = ?").run(r.chatId), s;
   }), f.handle("get-templates", () => e.prepare("SELECT * FROM prompt_templates ORDER BY category, title").all()), f.handle("create-template", (t, r) => {
-    const n = C();
-    return e.prepare("INSERT INTO prompt_templates (id, key, title, prompt) VALUES (?, ?, ?, ?)").run(n, r.key, r.title, r.prompt), n;
-  }), f.handle("update-template", (t, r) => (e.prepare("UPDATE prompt_templates SET key = ?, title = ?, prompt = ? WHERE id = ?").run(r.key, r.title, r.prompt, r.id), !0)), f.handle("delete-template", (t, r) => (e.prepare("DELETE FROM prompt_templates WHERE id = ?").run(r), !0)), f.handle("get-setting", (t, r) => {
-    const n = e.prepare("SELECT value FROM settings WHERE key = ?").get(r);
-    return n ? n.value : null;
-  }), f.handle("set-setting", (t, r, n) => {
-    e.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(r, n), r === "ollamaApiKey" && B.updateApiKey(n);
+    const s = C(), o = r.prompt.endsWith(`
+`) ? r.prompt : r.prompt + `
+`, n = r.key.startsWith("/") ? r.key : "/" + r.key;
+    return e.prepare("INSERT INTO prompt_templates (id, key, title, prompt) VALUES (?, ?, ?, ?)").run(s, n, r.title, o), s;
+  }), f.handle("update-template", (t, r) => {
+    const s = r.prompt.endsWith(`
+`) ? r.prompt : r.prompt + `
+`, o = r.key.startsWith("/") ? r.key : "/" + r.key;
+    return e.prepare("UPDATE prompt_templates SET key = ?, title = ?, prompt = ? WHERE id = ?").run(o, r.title, s, r.id), !0;
+  }), f.handle("delete-template", (t, r) => (e.prepare("DELETE FROM prompt_templates WHERE id = ?").run(r), !0)), f.handle("get-setting", (t, r) => {
+    const s = e.prepare("SELECT value FROM settings WHERE key = ?").get(r);
+    return s ? s.value : null;
+  }), f.handle("set-setting", (t, r, s) => {
+    e.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(r, s), r === "ollamaApiKey" && B.updateApiKey(s);
   }), f.handle("read-file", async (t, r) => {
-    var n;
+    var s;
     try {
-      const o = L.readFileSync(r), s = (n = r.split(".").pop()) == null ? void 0 : n.toLowerCase();
-      return s === "pdf" ? { type: "text", content: (await Rt(o)).text, name: r.split(/[/\\]/).pop() } : ["png", "jpg", "jpeg", "webp", "gif"].includes(s || "") ? { type: "image", content: o.toString("base64"), name: r.split(/[/\\]/).pop() } : { type: "text", content: o.toString("utf-8"), name: r.split(/[/\\]/).pop() };
+      const o = L.readFileSync(r), n = (s = r.split(".").pop()) == null ? void 0 : s.toLowerCase();
+      return n === "pdf" ? { type: "text", content: (await Rt(o)).text, name: r.split(/[/\\]/).pop() } : ["png", "jpg", "jpeg", "webp", "gif"].includes(n || "") ? { type: "image", content: o.toString("base64"), name: r.split(/[/\\]/).pop() } : { type: "text", content: o.toString("utf-8"), name: r.split(/[/\\]/).pop() };
     } catch (o) {
       throw console.error("File read error:", o), o;
     }
-  }), f.handle("save-file", async (t, { content: r, defaultPath: n }) => {
+  }), f.handle("save-file", async (t, { content: r, defaultPath: s }) => {
     const { filePath: o } = await Re.showSaveDialog({
-      defaultPath: n,
+      defaultPath: s,
       filters: [{ name: "Markdown", extensions: ["md"] }]
     });
     return o ? (L.writeFileSync(o, r), !0) : !1;
@@ -1230,7 +1241,7 @@ const _e = Oe(import.meta.url), Z = b.dirname(_e);
 globalThis.__filename = _e;
 globalThis.__dirname = Z;
 process.env.APP_ROOT = b.join(Z, "..");
-const H = process.env.VITE_DEV_SERVER_URL, Ft = b.join(process.env.APP_ROOT, "dist-electron"), ve = b.join(process.env.APP_ROOT, "dist");
+const H = process.env.VITE_DEV_SERVER_URL, kt = b.join(process.env.APP_ROOT, "dist-electron"), ve = b.join(process.env.APP_ROOT, "dist");
 process.env.VITE_PUBLIC = H ? b.join(process.env.APP_ROOT, "public") : ve;
 let w;
 function Ae() {
@@ -1255,7 +1266,7 @@ S.whenReady().then(() => {
   fe(), B.initialize(), Ot(), Ae();
 });
 export {
-  Ft as MAIN_DIST,
+  kt as MAIN_DIST,
   ve as RENDERER_DIST,
   H as VITE_DEV_SERVER_URL
 };
