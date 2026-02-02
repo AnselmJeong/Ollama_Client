@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #1a1a1a;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom transitions */
+.transition-all {
+  transition-duration: 200ms;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+/* Table styling */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.prose th, .prose td {
+  border: 1px solid #e5e5e5;
+  padding: 0.75rem;
+}
+
+.prose th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+}
+
+/* Math styling */
+.katex-display {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+.katex {
+  font-size: 1.1em;
+}
+
+/* Improved Prose */
+.prose {
+  max-width: none !important;
+}
+
+.prose p {
+  margin-bottom: 1.25rem;
+}
+
+/* Streaming cursor effect */
+.streaming::after {
+  content: "▊";
+  animation: blink 1s steps(2, start) infinite;
+  margin-left: 2px;
+  color: #3b82f6;
+}
+
+@keyframes blink {
+  to { visibility: hidden; }
+}
+
+/* Prose refinements */
+.prose pre {
+  margin: 0 !important;
+}
+
+.prose code {
+  color: inherit !important;
+  font-weight: 400 !important;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "" !important;
+}
